@@ -19,6 +19,7 @@ class OrderInfo:
         self.invoiceTax = invoiceSubTotal * .075
         self.invoiceTotal = self.invoiceTax + self.invoiceSubTotal 
 
+
     def getInvoice(self):
         """Return order invoice string"""
         self.calcOrderTotal()

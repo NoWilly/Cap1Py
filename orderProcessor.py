@@ -26,6 +26,7 @@ class Program:
         orderDesc = input("\tEnter order description: ")
         noItems = int(input("\tHow many items are you ordering? "))
         count = 1
+        
         print("\nEnter order details")
         while count <= noItems:
             print(f"Enter item #{count}: ")
@@ -36,6 +37,7 @@ class Program:
             itemSubtotal = partQty * partCost
             orderLines.append(LineItem(partNum, partDesc, partCost, partQty, itemSubtotal))
             count += 1 
+
         return orderLines
         
 if __name__ == '__main__':
