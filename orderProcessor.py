@@ -5,41 +5,64 @@ class Program:
         """ Application starting point """
         print("Order processing application")
         customer = self.getCustomerInfo()
-        orderLines = self.getOrderLines()
-        OrderInfo.order = orderLines
+        order = self.getOrder()
+        OrderInfo.lineItems = order
         # Output invoice
-        invoice = OrderInfo.getInvoice()
+        invoice = self.getInvoice()
         print("\nCustomer Invoice\n")
         print(invoice)
 
     def getCustomerInfo(self):
-        print("Enter customer information: ")
-        firstName = input("\tEnter first name: ")
-        lastName = input("\tEnter last name: ")
-        email = input("\tEnter email address: ")
+        print("\tCustomer information")
+        firstName = input("\t\tEnter first name: ")
+        lastName = input("\t\tEnter last name: ")
+        email = input("\t\tEnter email address: ")
         return Customer(firstName, lastName, email)
     
-    def getOrderLines(self):
-        print("\nCreate order:")
-        orderLines = []
-        orderNum = input("\tEnter order number: ")
-        orderDesc = input("\tEnter order description: ")
-        noItems = int(input("\tHow many items are you ordering? "))
+    def getOrder(self):
+        print("\n\tCreate order:")
+        order = []
+        orderNum = input("\t\tEnter order number: ")
+        orderDesc = input("\t\tEnter order description: ")
+        order.append(OrderInfo(orderNum, orderDesc))
+        noItems = int(input("\t\tHow many items are you ordering? "))
         count = 1
-        
-        print("\nEnter order details")
+        print("\n\tEnter order details")
         while count <= noItems:
-            print(f"Enter item #{count}: ")
-            partNum = input("\tEnter part number: ")
-            partDesc = input("\tEnter part description: ")
-            partCost = float(input("\tEnter part cost: "))
-            partQty = float(input("\tEnter quantity: "))
+            print(f"\tEnter item #{count}: ")
+            partNum = input("\t\tEnter part number: ")
+            partDesc = input("\t\tEnter part description: ")
+            partCost = float(input("\t\tEnter part cost: "))
+            partQty = float(input("\t\tEnter quantity: "))
             itemSubtotal = partQty * partCost
-            orderLines.append(LineItem(partNum, partDesc, partCost, partQty, itemSubtotal))
+            order.append(LineItem(partNum, partDesc, partCost, partQty, itemSubtotal))
             count += 1 
+        return order
+    
+    def calcOrderTotal(self):
+        """Calculate invoice subtotal, tax, total"""
+        invoiceSubTotal = 0.0
+        i = 1
+        for i in OrderInfo.lineItems:
+            print("TBCompleted")
+            invoiceSubTotal += lineItems.itemSubtotal[i]
+        invoiceSubTotal = invoiceSubTotal
+        invoiceTax = invoiceSubTotal * .075
+        invoiceTotal = invoiceTax + invoiceSubTotal 
+        return invoiceSubTotal, invoiceTax, invoiceTotal
 
-        return orderLines
-        
+    def getInvoice(self):
+        """Return order invoice string"""
+        #self.calcOrderTotal()
+        invoice = ""
+        invoice += f"Customer : {self.customer.firstName}, {self.customer.lastName}, {self.customer.email}\n"
+        for i in range(1, len(self.lineItems)+1):
+            invoice += f"\tLine #{i} "
+        invoice += f"\t\t\tTax: {self.invoiceSubTotal}\n"
+        invoice += f"\t\t\tTax: {self.invoiceTax}\n"
+        invoice += f"\t\tTotal Invoice: {self.invoiceTotal}\lastName"
+        return invoice
+
 if __name__ == '__main__':
     program = Program()
     program.main()
