@@ -6,9 +6,9 @@ class Program:
         print("Order processing application")
         customer = self.getCustomerInfo()
         order = self.getOrder()
-        OrderInfo.lineItems = order
+
         # Output invoice
-        invoice = self.getInvoice()
+        invoice = self.getInvoice(customer, order)
         print("\nCustomer Invoice\n")
         print(invoice)
 
@@ -37,7 +37,7 @@ class Program:
             itemSubtotal = partQty * partCost
             order.append(LineItem(partNum, partDesc, partCost, partQty, itemSubtotal))
             count += 1 
-        return order
+        return OrderInfo(orderNum, orderDesc, order)
     
     def calcOrderTotal(self):
         """Calculate invoice subtotal, tax, total"""
@@ -51,16 +51,21 @@ class Program:
         invoiceTotal = invoiceTax + invoiceSubTotal 
         return invoiceSubTotal, invoiceTax, invoiceTotal
 
-    def getInvoice(self):
+    def getInvoice(self, customer, order):
         """Return order invoice string"""
         #self.calcOrderTotal()
+        lineItemNums = len(order.lineItems)
         invoice = ""
-        invoice += f"Customer : {self.customer.firstName}, {self.customer.lastName}, {self.customer.email}\n"
-        for i in range(1, len(self.lineItems)+1):
-            invoice += f"\tLine #{i} "
-        invoice += f"\t\t\tTax: {self.invoiceSubTotal}\n"
-        invoice += f"\t\t\tTax: {self.invoiceTax}\n"
-        invoice += f"\t\tTotal Invoice: {self.invoiceTotal}\lastName"
+        invoice += f"Customer : {customer.firstName}, {customer.lastName}, {customer.email}\n"
+        for i in range(1, lineItemNums+1):
+            invoice += f"\tLine #{i}"
+ 
+        #invoice += f"\t\t\tTax: {self.invoiceSubTotal}\n"
+        #invoice += f"\t\t\tTax: {self.invoiceTax}\n"
+        #invoice += f"\t\tTotal Invoice: {self.invoiceTotal} lastName"
+
+        #Start Here
+
         return invoice
 
 if __name__ == '__main__':
