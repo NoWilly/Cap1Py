@@ -6,10 +6,9 @@ class Program:
         print("Order processing application")
         customer = self.getCustomerInfo()
         order = self.getOrder()
-
         # Output invoice
         invoice = self.getInvoice(customer, order)
-        print("\nCustomer Invoice\n")
+        print("\nCustomer Invoice for ")
         print(invoice)
 
     def getCustomerInfo(self):
@@ -39,33 +38,22 @@ class Program:
             count += 1 
         return OrderInfo(orderNum, orderDesc, order)
     
-    def calcOrderTotal(self):
-        """Calculate invoice subtotal, tax, total"""
-        invoiceSubTotal = 0.0
-        i = 1
-        for i in OrderInfo.lineItems:
-            print("TBCompleted")
-            invoiceSubTotal += lineItems.itemSubtotal[i]
-        invoiceSubTotal = invoiceSubTotal
-        invoiceTax = invoiceSubTotal * .075
-        invoiceTotal = invoiceTax + invoiceSubTotal 
-        return invoiceSubTotal, invoiceTax, invoiceTotal
-
     def getInvoice(self, customer, order):
         """Return order invoice string"""
-        #self.calcOrderTotal()
         lineItemNums = len(order.lineItems)
         invoice = ""
-        invoice += f"Customer : {customer.firstName}, {customer.lastName}, {customer.email}\n"
-        for i in range(1, lineItemNums+1):
-            invoice += f"\tLine #{i}"
- 
-        #invoice += f"\t\t\tTax: {self.invoiceSubTotal}\n"
-        #invoice += f"\t\t\tTax: {self.invoiceTax}\n"
-        #invoice += f"\t\tTotal Invoice: {self.invoiceTotal} lastName"
-
-        #Start Here
-
+        invoice += f"Customer : {customer.firstName} {customer.lastName} \tEmail: {customer.email}\n"
+        invoice += f"Order number: {order.lineItems[0].orderNum} Order description: {order.lineItems[0].orderDesc}\n"
+        invoice += f"\t\tPart\tDescription\tCost\tQty\n"
+        invoiceSubTotal = 0.0
+        for i in range(1, lineItemNums):
+            invoice += f"\tLine #{i}\t{order.lineItems[i].partNum}\t{order.lineItems[i].partDesc}\t{order.lineItems[i].partCost}\t{order.lineItems[i].partQty}\t{order.lineItems[i].itemSubtotal:.2f} \n"
+            invoiceSubTotal += order.lineItems[i].itemSubtotal
+        invoice += f"\t\t\t\t\t     Sub total: {invoiceSubTotal:,.2f}\n"
+        invoiceTax = invoiceSubTotal * 0.075
+        invoice += f"\t\t\t\t\t\t    Tax: {invoiceTax:,.2f}\n"
+        invoiceTotal = invoiceSubTotal + invoiceTax
+        invoice += f"\t\t\t\t\t   Order Total: {invoiceTotal:,.2f}\n"
         return invoice
 
 if __name__ == '__main__':
